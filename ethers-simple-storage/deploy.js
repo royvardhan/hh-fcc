@@ -2,7 +2,7 @@ const ethers = require("ethers");
 const fs = require("fs-extra");
 
 async function main() {
-  // http://127.0.0.1:7545
+  // http://127.0.0.1:7545 Ganache local test network
   const provider = new ethers.providers.JsonRpcProvider(
     "http://127.0.0.1:7545"
   );
