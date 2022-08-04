@@ -5,7 +5,14 @@ require("dotenv").config();
 async function main() {
   // http://127.0.0.1:7545 Ganache local test network
   const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+  // const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider); // simple way to construct Wallet
+  const encryptedJson = fs.readFileSync("./.encryptedJsonKey.json", "utf8"); //encrypted way to construct Wallet
+  let wallet = new ethers.Wallet.fromEncryptedJsonSync(
+    encryptedJson, //encrypted way to construct Wallet
+    process.env.PRIVATE_KEY_PASSWORD
+  );
+
+  wallet = await wallet.connect(provider); // connect to provider
   const abi = fs.readFileSync("./SimpleStorage_sol_SimpleStorage.abi", "utf-8");
   const binary = fs.readFileSync(
     "./SimpleStorage_sol_SimpleStorage.bin",
