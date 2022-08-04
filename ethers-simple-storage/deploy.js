@@ -18,6 +18,9 @@ async function main() {
   console.log("Deploying contract...");
   const contract = await contractFactory.deploy();
   console.log("Deployed to: " + contract.address);
+
+  // The following commented out code is for deploying the contract using the SEND TRANSACTION method
+
   // const nonce = await wallet.getTransactionCount();
   // const tx = {
   //   nonce: nonce,
@@ -31,6 +34,15 @@ async function main() {
   // const sentTxRes = await wallet.sendTransaction(tx);
   // await sentTxRes.wait(1);
   // console.log(sentTxRes);
+
+  // Now testing the smart contract using ethers
+  const currentFavNumber = await contract.retrieve();
+  console.log(`Current Favourite Number: ${currentFavNumber.toString()}`);
+
+  const txRes = await contract.store("7");
+  const txReceipt = await txRes.wait(1);
+  const updatedFavNumber = await contract.retrieve();
+  console.log(`Updated Favourite Number: ${updatedFavNumber.toString()}`);
 }
 
 main()
